@@ -13,6 +13,7 @@ typedef struct {
 int init_sdl();
 void init_display(Display *display);
 void update_display(Chip8 *chip8, Display *display);
+void check_input();
 void cleanup();
 
 #endif

@@ -19,6 +19,11 @@ typedef struct {
     uint16_t op;
 
     uint8_t display[64 * 32];
+
+    uint8_t dt;
+    uint8_t st;
+
+    uint8_t keys[16];
 } Chip8;
 
 #endif
