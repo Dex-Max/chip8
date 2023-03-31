@@ -169,29 +169,29 @@ void execute_opcode(Chip8 *chip8, Display *display) {
             chip8->pc = (chip8->op & 0xfff) + chip8->reg[0];
             break;
         case 0xC:
-            chip8->reg[(chip8->op >> 4) & 0xf] = (rand() % 0xff) & (chip8->op & 0xff);
+            chip8->reg[(chip8->op >> 8) & 0xf] = (rand() % 0xff) & (chip8->op & 0xff);
             break;
         case 0xD:
             int x = chip8->reg[(chip8->op >> 8) & 0xf] % 64;
             int y = chip8->reg[(chip8->op >> 4) & 0xf] % 32; 
             int n = chip8->op & 0xf;
             int i;
+            int p;
 
             chip8->reg[0xf] = 0;
 
             for (i = 0; i < n; i++) {
                 uint8_t sprite = chip8->mem[chip8->I_reg + i];
-                int p;
 
                 for (p = 0; p < 8; p++) {
-                    uint8_t pixel_index = (y + i) * 64 + (x + p);
+                    int pixel_index = (y + i) * 64 + (x + p);
 
-                    if (pixel_index < 64 * 32) {
+                    if (pixel_index < 64 * 32 && x + p < 64) {
                         if (chip8->display[pixel_index] && ((sprite >> (7 - p)) & 1)) {
                             chip8->reg[0xf] = 1;
                         }
 
-                        chip8->display[(y + i) * 64 + (x + p)] ^= (sprite >> (7 - p)) & 1;
+                        chip8->display[pixel_index] ^= (sprite >> (7 - p)) & 1;
                     }
                 }
             }
